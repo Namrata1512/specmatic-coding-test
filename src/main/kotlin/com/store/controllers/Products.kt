@@ -35,7 +35,8 @@ class ProductsController {
                             productId,
                             productDetails.name,
                             productDetails.type,
-                            productDetails.inventory
+                            productDetails.inventory,
+                            productDetails.cost
                     )
             productsMap[productId] = product
             return ResponseEntity.status(HttpStatus.CREATED).body(ProductId(productId))
@@ -46,7 +47,8 @@ class ProductsController {
     private fun isValidProductData(productDetails: ProductDetails): Boolean {
         return isValidProductName(productDetails.name) &&
                 isValidProductType(productDetails.type) &&
-                isValidInventory(productDetails.inventory)
+                isValidInventory(productDetails.inventory) &&
+                isValidCost(productDetails.cost)
     }
 
     // Function to validate the product name as string
@@ -67,11 +69,15 @@ class ProductsController {
     private fun isValidInventory(inventory: Number?): Boolean {
         return inventory != null
     }
-    
+
+    // Function to validate the product cost
+    private fun isValidCost(cost: Double): Boolean {
+        return cost > 0
+    }
 }
 
-data class Product(val id: Int, val name: String, val type: String, val inventory: Number)
+data class Product(val id: Int, val name: String, val type: String, val inventory: Number, val cost: Double)
 
-data class ProductDetails(val name: String, val type: String, val inventory: Number)
+data class ProductDetails(val name: String, val type: String, val inventory: Number, val cost: Double)
 
 data class ProductId(val id: Int)
